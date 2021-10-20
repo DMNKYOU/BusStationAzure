@@ -15,9 +15,21 @@ jobs:
         uses: actions/setup-dotnet@v1
         with: 
           dotnet-version: '5.0.x'
-      
+          
+      - name: Start SQL Server 🔧
+        run: |
+         docker run -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=Pass!w098" -e "MSSQL_PID=Express" -p 1433:1433 -d mcr.microsoft.com/mssql/server:2019-latest
+
+      - name: Sleep for 5 seconds
+        uses: jakejarvis/wait-action@master
+        with:
+          time: '5s'
+
       - name: Restore dependencies 🛠
         run: dotnet restore
 
       - name: Build app 🚀
         run: dotnet build -c Release --no-restore
+      
+      - name: Publish app 💎
+        run: dotnet publish -c Release -o ./out
