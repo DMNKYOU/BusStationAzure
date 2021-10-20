@@ -5,7 +5,9 @@ on:
     branches: [ main ]
   pull_request:
     branches: [ main ]
-
+env:
+  DOTNET_VERSION: '5.0.x'
+  AZURE_WEBAPP_NAME: Busstopstation
 jobs:
   path-context:
     runs-on: ubuntu-latest
@@ -16,7 +18,8 @@ jobs:
       - name: Set up .NET 5 🔧
         uses: actions/setup-dotnet@v1
         with: 
-          dotnet-version: '5.0.x'
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
       - name: Start SQL Server 🔧
         run: |
          docker run -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=Pass!w098" -e "MSSQL_PID=Express" -p 1433:1433 -d mcr.microsoft.com/mssql/server:2019-latest    
@@ -34,3 +37,10 @@ jobs:
       
       - name: Publish app 💎
         run: dotnet publish -c Release -o ./out
+      
+      - name: Deploy to Azure
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: ${{ env.AZURE_WEBAPP_NAME }}
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_SECRET }}
+          package: ./out
