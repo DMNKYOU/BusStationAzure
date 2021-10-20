@@ -64,9 +64,9 @@ namespace BusStationCRM
            
             services.AddAuthorization(options =>
             {
-                options.FallbackPolicy = new AuthorizationPolicyBuilder()
-                    .RequireAuthenticatedUser()
-                    .Build();
+                //options.FallbackPolicy = new AuthorizationPolicyBuilder()
+                //    .RequireAuthenticatedUser()
+                //    .Build();
                 //options.AddPolicy("ManageAndDevDepart", policy => //AllRolesFromManagementAndDevelopmentDepartments
                 //    policy.RequireRole("Admin", "Manager"));
             }); 
@@ -85,7 +85,6 @@ namespace BusStationCRM
             services.AddScoped<IVoyagesService, VoyagesService>();
             services.AddScoped<IOrdersService, OrdersService>();
             services.AddScoped<ITicketsService, TicketsService>();
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
