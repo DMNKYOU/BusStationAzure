@@ -2,11 +2,13 @@ name: cicd
 
 on:
   push:
-    branches: main, master
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
 
 jobs:
   path-context:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     steps:
       - name: Check out code 🛎
         uses: actions/checkout@v2
